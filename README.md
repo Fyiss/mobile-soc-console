@@ -1,4 +1,4 @@
-# 📱 Mobile SOC Console — Phone-Controlled Intrusion Response System
+#  Mobile SOC Console — Phone-Controlled Intrusion Response System
 
 A real-time cybersecurity project that detects security incidents on a Linux host and lets you authorize and execute response actions directly from your smartphone.
 
@@ -24,7 +24,7 @@ Linux Agent ←→ Mosquitto MQTT (localhost:1883) ←→ FastAPI Broker ←→ 
 | Message Broker | Mosquitto MQTT |
 | Backend | FastAPI + uvicorn |
 | Mobile App | Flutter 3.27.4 |
-| Phone | iQOO Neo 10 (Android) |
+| Phone | (Android) |
 
 ---
 
@@ -114,7 +114,7 @@ adb devices
 # Expected: <device_id>    device
 ```
 
-> On your iQOO Neo 10: go to **Settings → About Phone → tap Build Number 7 times** to enable Developer Options, then **Settings → Developer Options → enable USB Debugging**.
+> On your phone: go to **Settings → About Phone → tap Build Number 7 times** to enable Developer Options, then **Settings → Developer Options → enable USB Debugging**.
 
 ---
 
@@ -221,7 +221,7 @@ http://127.0.0.1:8000
 
 > **Note:** Direct WiFi won't work if your router has AP Isolation enabled (most home routers do). Use your phone's hotspot instead.
 
-1. Enable hotspot on your iQOO Neo 10
+1. Enable hotspot on your phone
 2. Connect your PC to the phone's hotspot
 3. Find your PC's new IP:
 ```bash
