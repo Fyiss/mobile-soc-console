@@ -1,0 +1,66 @@
+"""
+Async event bus — monitors publish events, broker/dispatcher subscribe.
+"""
+
+import asyncio
+import logging
+from dataclasses import dataclass, field
+from typing import Any, Callable, Dict, List
+from datetime import datetime, timezone
+import uuid
+
+log = logging.getLogger("event_bus")
+
+
+@dataclass
+class SecurityEvent:
+    id: str = field(default_factory=lambda: str(uuid.uuid4())[:8])
+    type: str = ""           # e.g. "ssh_bruteforce", "suspicious_process"
+    severity: str = "medium" # low | medium | high | critical
+    source_ip: str = ""
+    pid: int = 0
+    description: str = ""
+    raw: Dict[str, Any] = field(default_factory=dict)
+    timestamp: str = field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "type": self.type,
+            "severity": self.severity,
+            "source_ip": self.source_ip,
+            "pid": self.pid,
+            "description": self.description,
+            "raw": self.raw,
+            "timestamp": self.timestamp,
+        }
+
+
+@dataclass
+class ResponseCommand:
+    action: str = ""         # block_ip | kill_process | isolate | dismiss
+    target: str = ""         # IP address or PID string
+    event_id: str = ""
+    authorized_by: str = ""  # phone device ID
+
+
+class EventBus:
+    def __init__(self):
+        self._alert_queue: asyncio.Queue = asyncio.Queue()
+        self._command_queue: asyncio.Queue = asyncio.Queue()
+
+    async def publish_event(self, event: SecurityEvent):
+        log.info(f"[EVENT] {event.type} | {event.severity} | {event.description}")
+        await self._alert_queue.put(event)
+
+    async def next_event(self) -> SecurityEvent:
+        return await self._alert_queue.get()
+
+    async def publish_command(self, cmd: ResponseCommand):
+        log.info(f"[CMD] {cmd.action} -> {cmd.target}")
+        await self._command_queue.put(cmd)
+
+    async def next_command(self) -> ResponseCommand:
+        return await self._command_queue.get()

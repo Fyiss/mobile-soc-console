@@ -1,0 +1,31 @@
+broker:
+  host: "localhost"
+  port: 1883
+  topic_alerts: "soc/alerts"
+  topic_commands: "soc/commands"
+  username: ""
+  password: ""
+  tls: false
+
+monitors:
+  ssh:
+    bruteforce_threshold: 5      # failures before alert
+    window_seconds: 60
+
+  process:
+    poll_interval: 5             # seconds between scans
+    cpu_alert_threshold: 90.0    # % CPU to flag
+
+  network:
+    poll_interval: 3
+    scan_threshold: 15           # unique ports from same IP
+    scan_window_seconds: 10
+
+  log:
+    file: "/var/log/auth.log"    # fallback to journald if missing
+    # Optional custom rules (uses built-in defaults if omitted)
+    # rules:
+    #   - name: custom_rule
+    #     pattern: "SOME_PATTERN"
+    #     severity: "high"
+    #     description: "Custom alert"
