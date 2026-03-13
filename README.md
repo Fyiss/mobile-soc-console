@@ -217,7 +217,7 @@ In the Flutter app, set Broker URL to:
 http://127.0.0.1:8000
 ```
 
-### Option B — Wireless (Phone Hotspot) ⭐ Recommended
+### Option B — Wireless (Phone Hotspot)
 
 > **Note:** Direct WiFi won't work if your router has AP Isolation enabled (most home routers do). Use your phone's hotspot instead.
 
